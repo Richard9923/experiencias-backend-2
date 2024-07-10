@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const produtoRouter = require('./routes/router.js');
+const path = require('path');
 const PORT = process.env.PORT || 3000;
 const pass = process.env.password;
 const user = process.env.user;
@@ -15,10 +16,8 @@ app.use(express.urlencoded({extended: false}));
 app.use('/api/products', produtoRouter);
 
 app.use('/', (req, res) => {
-    res.send("hello")
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 })
-
-
 
 mongoose.connect(`mongodb+srv://${user}:${pass}@backenddb.dgjbbik.mongodb.net/?retryWrites=true&w=majority&appName=BackendDB`)
 .then(() => {
