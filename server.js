@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const produtoRouter = require('./routes/router.js');
 const path = require('path');
+const { fileURLToPath } = require('url');
 const PORT = process.env.PORT || 3000;
 const pass = process.env.password;
 const user = process.env.user;
@@ -13,11 +14,10 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
-app.use('/api/products', produtoRouter);
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-})
+
+app.use('/api/products', produtoRouter);
 
 mongoose.connect(`mongodb+srv://${user}:${pass}@backenddb.dgjbbik.mongodb.net/?retryWrites=true&w=majority&appName=BackendDB`)
 .then(() => {
